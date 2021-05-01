@@ -19,6 +19,13 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.REDIRECT_URI,
 });
 
+// create middleware to allow CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.get("/login", (req, res) => {
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
