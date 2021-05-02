@@ -1,15 +1,31 @@
 var xhr;
-const url = 'https://api.kylecheung.ca/';
+const url = "https://api.kylecheung.ca/";
+
 function makeRequest() {
-    xhr = new XMLHttpRequest();
-    xhr.open('GET',  url + 'test');
-    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-    xhr.send();
-}
 
-console.log('test')
+    // using promises instead of xhr
+  fetch(`${url}test`)
+    .then(function (res) {
+      if (res.status !== 200) {
+        console.log("Something went wrong! Status Code: " + res.status);
+        return;
+      }
 
+      // parse body as json witha promise
+      res.json().then(function (data) {
+        // if successful do stuff
+        console.log(data);
+      });
+    })
+    .catch(function (err) {
+      console.log("Fetch Error: ", err);
+    });
 
-function test() {
-    console.log('yes');
+  // xhr = new XMLHttpRequest();
+  // xhr.open('GET',  url + 'test');
+  // xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+  // xhr.setRequestHeader('Content-Type', "application/json");
+  // xhr.send();
+  // console.log(xhr.response);
+  // console.log(xhr.response.body);
 }
