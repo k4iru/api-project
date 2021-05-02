@@ -130,7 +130,7 @@ app.get("/callback", (req, res) => {
 });
 
 // endpoint for front end. make api call and do stuff with data
-app.get("/getMe", (req, res) => {
+app.get("/test", (req, res) => {
   (async () => {
     const me = await spotifyApi.getMe();
     res.res.json(me);
