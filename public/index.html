@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <title>API Project</title>
     <link rel="stylesheet" href="style/style.css" />
-    <script src="scripts/script.js"></script>
+    <script src="scripts/script.js" defer></script>
   </head>
   <body>
     <h1>API</h1>
     <button><a href="/login">Authorize Spotify</a></button>
 
-    <button onclick="makeRequest()">Make call</button>
+    <button onclick="makeRequest()">Get User Information</button>
 
     <button><a href="/lastfm">Authorize Last FM</a></button>
+    <span id="email"></span>
   </body>
 </html>

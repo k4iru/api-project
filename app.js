@@ -1,7 +1,8 @@
 // so api keys are exposed
 require("dotenv").config();
 const md5 = require("md5");
-const request = require("request");
+//const request = require("request");
+const https = require('https');
 const cors = require("cors");
 const express = require("express");
 const app = express();
@@ -76,6 +77,7 @@ app.get("/lastfmcallback", (req, res) => {
   };
 
   //console.log(api_sig);
+  //after some reading request has been deprecated
   //let r = request.get(lastFM.api, (params = payload));
   //console.log(r);
   res.send("okay");
@@ -130,10 +132,10 @@ app.get("/callback", (req, res) => {
 });
 
 // endpoint for front end. make api call and do stuff with data
-app.get("/test", (req, res) => {
+app.get("/getMe", (req, res) => {
   (async () => {
     const me = await spotifyApi.getMe();
-    res.res.json(me);
+    res.json(me);
   })().catch((e) => {
     console.error(e);
   });
