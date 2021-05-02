@@ -1,10 +1,11 @@
 var xhr;
 const url = "https://api.kylecheung.ca/";
+const local = "https://localhost:8888/"
 
 function makeRequest() {
 
     // using promises instead of xhr
-  fetch(`${url}test`)
+  fetch(`${url}getMe`)
     .then(function (res) {
       if (res.status !== 200) {
         console.log("Something went wrong! Status Code: " + res.status);

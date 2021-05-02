@@ -76,16 +76,14 @@ app.get("/lastfmcallback", (req, res) => {
   };
 
   //console.log(api_sig);
-  let r = request.get(lastFM.api, (params = payload));
-  console.log(r);
+  //let r = request.get(lastFM.api, (params = payload));
+  //console.log(r);
   res.send("okay");
 });
 
 //
 app.get("/", (req, res) => {
-  if (req.query.token) {
-    lastFM.token = req.query.token;
-  }
+
   const error = req.query.error;
   const code = req.query.code;
   console.log(code);
@@ -95,7 +93,6 @@ app.get("/", (req, res) => {
     res.send(`callack error: ${error}`);
     return;
   }
-  console.log("test");
 
   spotifyApi
     .authorizationCodeGrant(code)
@@ -130,7 +127,7 @@ app.get("/", (req, res) => {
 });
 
 // endpoint for front end. make api call and do stuff with data
-app.get("/test", (req, res) => {
+app.get("/getMe", (req, res) => {
   (async () => {
     const me = await spotifyApi.getMe();
     res.res.json(me);
