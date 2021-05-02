@@ -1,8 +1,9 @@
 // so api keys are exposed
+require("isomorphic-fetch");
 require("dotenv").config();
 const md5 = require("md5");
 //const request = require("request");
-const https = require('https');
+const https = require("https");
 const cors = require("cors");
 const express = require("express");
 const app = express();
@@ -23,11 +24,10 @@ app.use(cors());
 // serve static files in public folder
 app.use(express.static("public"));
 
-const lastFM = {
-  url: "http://www.last.fm/api/auth/?",
-  api: "http://ws.audioscrobbler.com/2.0/",
-  apiKey: process.env.LAST_API_KEY,
-  sharedSecret: process.env.LAST_SECRET,
+const TM = {
+  url: "https://app.ticketmaster.com/discovery/v2/",
+  apiKey: process.env.TM_API_KEY,
+  secret: process.env.TM_SECRET,
   token: null,
 };
 
@@ -54,40 +54,7 @@ app.get("/login", (req, res) => {
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
-// get access token for lastfm
-app.get("/lastfm", (req, res) => {
-  res.redirect(`${lastFM.url}api_key=${lastFM.apiKey}`);
-});
-
-// lastfm callback uri
-// create auth session using request
-// https://www.last.fm/api/webauth
-app.get("/lastfmcallback", (req, res) => {
-  lastFM.token = req.query.token;
-
-  let api_sig = md5(
-    `api_key${lastFM.apiKey}methodauth.getSessiontoken${lastFM.token}${lastFM.sharedSecret}`
-  );
-
-  payload = {
-    api_key: lastFM.apiKey,
-    method: "auth.getSession",
-    token: lastFM.token,
-    api_sig: api_sig,
-  };
-
-  //console.log(api_sig);
-  //after some reading request has been deprecated
-  //let r = request.get(lastFM.api, (params = payload));
-  //console.log(r);
-  res.send("okay");
-});
-
-//
-app.get("/", (req, res) => {
-
-});
-
+// spotify callback
 app.get("/callback", (req, res) => {
   const error = req.query.error;
   const code = req.query.code;
@@ -114,7 +81,6 @@ app.get("/callback", (req, res) => {
       );
       res.send("Success! You can now close the window.");
 
-
       // auto refresh token
       setInterval(async () => {
         const data = await spotifyApi.refreshAccessToken();
@@ -139,6 +105,27 @@ app.get("/getMe", (req, res) => {
   })().catch((e) => {
     console.error(e);
   });
+});
+
+// ticketmaster events
+app.get("/events", (req, res) => {
+  let data = fetch(
+    "https://app.ticketmaster.com/discovery/v2/events.json?apikey=jhsGy1zO4fzWEVjVOhGFStdkPyxPyhn8"
+  )
+    .then(function (response) {
+      if (response.status !== 200) {
+        console.log("Something went wrong! Status Code: " + res.status);
+        return;
+      }
+      // parse body as json with a promise
+      response.json().then(function (data) {
+        // if successful do stuff
+        res.json(data);
+      });
+    })
+    .catch(function (err) {
+      console.log("Fetch Error: ", err);
+    });
 });
 
 // listen

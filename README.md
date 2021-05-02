@@ -1,5 +1,7 @@
 # api-project
 
+This is a project that aims to use Spotify Api and TicketMaster Api to find concerts for artists you like nearby.
+
 https://music.kylecheung.ca/
 
 # Instructions

@@ -1,10 +1,21 @@
 //var xhr;
 
-let email = document.getElementById('email');
-function makeRequest() {
+// check if geolocation is supported
 
-    // using promises instead of xhr
-  fetch('/getMe')
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(showPosition);
+}
+
+// on success
+function showPosition(position) {
+  console.log(position.coords.latitude) 
+  console.log(position.coords.longitude);
+}
+
+let email = document.getElementById("email");
+function makeRequest() {
+  // using promises instead of xhr
+  fetch("/getMe")
     .then(function (res) {
       if (res.status !== 200) {
         console.log("Something went wrong! Status Code: " + res.status);
@@ -23,11 +34,11 @@ function makeRequest() {
       console.log("Fetch Error: ", err);
     });
 
-//   xhr = new XMLHttpRequest();
-//   xhr.open('GET',  url + 'test');
-//   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-//   xhr.setRequestHeader('Content-Type', "application/json");
-//   xhr.send();
-//   console.log(xhr.response);
-//   console.log(xhr.response.body);
+  //   xhr = new XMLHttpRequest();
+  //   xhr.open('GET',  url + 'test');
+  //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+  //   xhr.setRequestHeader('Content-Type', "application/json");
+  //   xhr.send();
+  //   console.log(xhr.response);
+  //   console.log(xhr.response.body);
 }
