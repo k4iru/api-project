@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require('cors');
 const express = require("express");
 const app = express();
 const SpotifyWebApi = require("spotify-web-api-node");
@@ -10,6 +11,9 @@ const scopes = [
   "user-library-read",
   "playlist-read-private",
 ];
+
+app.use(cors());
+app.use(express.static('public'));
 
 // wrapper library for spotify
 // https://github.com/thelinmichael/spotify-web-api-node
@@ -37,7 +41,6 @@ app.get("/", (req, res) => {
 app.get("/callback", (req, res) => {
   const error = req.query.error;
   const code = req.query.code;
-  const state = req.query.state;
 
   if (error) {
     console.log("callback error:", error);
