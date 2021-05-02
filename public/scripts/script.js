@@ -12,7 +12,7 @@ function makeRequest() {
         return;
       }
 
-      // parse body as json witha promise
+      // parse body as json with a promise
       res.json().then(function (data) {
         // if successful do stuff
         console.log(data);

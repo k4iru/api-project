@@ -84,9 +84,12 @@ app.get("/lastfmcallback", (req, res) => {
 //
 app.get("/", (req, res) => {
 
+});
+
+app.get("/callback", (req, res) => {
   const error = req.query.error;
   const code = req.query.code;
-  console.log(code);
+  const state = req.query.state;
 
   if (error) {
     console.log("callback error:", error);
@@ -107,8 +110,8 @@ app.get("/", (req, res) => {
       console.log(
         `Successfully retrieved access token. Expires in ${expires_in} s.`
       );
-      //res.send("Success! You can now close the window.");
-      res.end();
+      res.send("Success! You can now close the window.");
+
 
       // auto refresh token
       setInterval(async () => {
